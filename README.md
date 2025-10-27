@@ -115,7 +115,7 @@ move_creates_skewer(FromR, FromC, ToR, ToC, SkewerScore) :-
     %    queremos simular que ya se movió a ToR,ToC
     path_clear_ignoring(ToR, ToC, R2, C2, FromR, FromC),
     
-    % 7. ARITMÉTICA IS: Calcular la puntuación del skewer
+    % 8. ARITMÉTICA IS: Calcular la puntuación del skewer
     %    BINDING: piece_value busca y liga los valores
     piece_value(FrontType, FrontValue),
     piece_value(AttackerType, AttackerValue),
@@ -222,7 +222,7 @@ Ambos objetivos del fork deben ser piezas valiosas, y definimos pieza valiosa co
 
 ![](assets/pin.png)
 
-**Reglas lógicas**: Similar al pin absoluto, pero la pieza objetivo NO debe ser el rey. Como asunción simplificadora, debe verificarse que el valor de la pieza objetivo sea mayor que el de la pieza clavada (`TargetValue > PinnedValue`). El valor de la pieza objetivo también debe ser mayor que el de la pieza atacante (`???`). El resto de verificaciones (alineación, caminos despejados, colores opuestos) son idénticas. La puntuación se calcula como  `(PinnedValue + TargetValue - PinnerValue) // 2`.
+**Reglas lógicas**: Similar al pin absoluto, pero la pieza objetivo NO debe ser el rey. Como asunción simplificadora, debe verificarse que el valor de la pieza objetivo sea mayor que el de la pieza clavada (`TargetValue > PinnedValue`). El valor de la pieza objetivo también debe ser mayor que el de la pieza atacante. El resto de verificaciones (alineación, caminos despejados, colores opuestos) son idénticas. La puntuación se calcula como  `(PinnedValue + TargetValue - PinnerValue) // 2`.
 
 
 ## Tarea 8: Evaluación de la ordenación de movimientos (Complejidad: baja)
