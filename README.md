@@ -65,7 +65,7 @@ La "puntuación python" se basa en una puntuación base para cada patrón tácti
 
 El fichero `chess_patterns.pl` contiene funciones auxiliares que te serán útiles (¡estudialas!) y las definiciones de los patrones tácticos que debes completar. 
 
-Esta KB recibe desde python las posiciones actuales de las piezas y los movimientos válidos. A continuación, usa estas posiciones y potenciales movimientos para detectar patrones tácticos. Como ejemplo, consideremos el patrón táctico *skewer*. Un *skewer* ocurre cuando una pieza ataca a una pieza valiosa, de modo que la pieza valiosa está obligada a moverse. Cuando la pieza valiosa se mueve para evitar la captura, expone otra pieza detrás de ella. Consideremos la siguiente posición, donde mueve las negras:
+Esta KB recibe desde python las posiciones actuales de las piezas y los movimientos válidos. A continuación, usa estas posiciones y potenciales movimientos para detectar patrones tácticos. Como ejemplo, consideremos el patrón táctico *skewer*. Un *skewer* ocurre cuando una pieza ataca a una pieza valiosa, de modo que la pieza valiosa está obligada a moverse. Cuando la pieza valiosa se mueve para evitar la captura, expone otra pieza detrás de ella. Consideremos la siguiente posición, donde mueven las negras:
 
 ![](assets/skewer1.png)
 
@@ -124,6 +124,12 @@ move_creates_skewer(FromR, FromC, ToR, ToC, SkewerScore) :-
 ```
 
 # Tareas
+
+Las Tareas siguen un orden que facilita la narrativa, pero este no es el orden en el que se deben completar. Se sugiere:
+1. Leer el enunciado en su totalidad para comprender la estructura de la práctica.
+2. Realizar las tareas en orden creciente de complejidad. La complejidad de las tareas se indica en el título de cada tarea
+
+
 ## Tarea 1: Modificación de heuristic_alphabeta_search (Complejidad: baja)
 Dado que queremos que alpha-beta sea capaz de reordenar los movimientos, será necesario modificar la definición de la implementación actual de `heuristic_alphabeta_search`
 
