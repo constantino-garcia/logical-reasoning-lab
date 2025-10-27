@@ -1,10 +1,3 @@
-"""
-Heuristic Alpha-Beta Chess Bot
-
-A chess bot that uses alpha-beta pruning with heuristic evaluation functions
-for positions that are not terminal states.
-"""
-
 import random
 import time
 from typing import Any, Callable, Dict, List
@@ -15,10 +8,7 @@ from pyswip import Prolog
 
 from adversarial_search.chess_game_state import ChessGameState
 from adversarial_search.chess_problem import ChessProblem
-from adversarial_search.game_algorithms import (
-    SearchStatistics,
-    heuristic_alphabeta_search,
-)
+from adversarial_search.game_algorithms import heuristic_alphabeta_search
 from bots.chess_bot import ChessBot
 from bots.features import PIECE_VALUES
 from bots.heuristic_alphabeta_bot import h3
@@ -28,19 +18,21 @@ class PrologPatternDetector:
     """Handles Prolog-based tactical pattern detection for chess positions."""
 
     def __init__(self, prolog_file: str = "bots/chess_patterns.pl"):
-        """Initialize Prolog engine and load knowledge base."""
+        """Initialize Prolog engine and load knowledge base.
+
+        :param prolog_file: Path to the Prolog knowledge base file
+        :type prolog_file: str
+        """
         self.prolog = Prolog()
         self.prolog.consult(prolog_file)
 
     def board_to_facts(self, board: chess.Board) -> List[str]:
-        """
-        Convert a chess board position to Prolog facts.
+        """Convert a chess board position to Prolog facts.
 
-        Args:
-            board: Current chess position
-
-        Returns:
-            List of Prolog facts representing the position
+        :param board: Current chess position
+        :type board: chess.Board
+        :return: List of Prolog facts representing the position
+        :rtype: List[str]
         """
         facts = []
 
@@ -79,8 +71,7 @@ class PrologPatternDetector:
         return facts
 
     def clear_dynamic_facts(self) -> None:
-        """
-        Clear all dynamic facts from the Prolog knowledge base.
+        """Clear all dynamic facts from the Prolog knowledge base.
 
         Uses retractall to ensure all instances of dynamic predicates are removed,
         preparing for the next position to be loaded.
@@ -105,11 +96,10 @@ class PrologPatternDetector:
                 pass
 
     def load_position(self, board: chess.Board) -> None:
-        """
-        Load a chess position into Prolog knowledge base.
+        """Load a chess position into Prolog knowledge base.
 
-        Args:
-            board: Chess position to load
+        :param board: Chess position to load
+        :type board: chess.Board
         """
         # Clear previous position
         self.clear_dynamic_facts()
@@ -122,18 +112,16 @@ class PrologPatternDetector:
     def detect_move_patterns(
         self, board: chess.Board, moves: List[chess.Move]
     ) -> Dict[chess.Move, Dict[str, Any]]:
-        """
-        Efficiently detect which moves create tactical patterns.
+        """Efficiently detect which moves create tactical patterns.
 
         This method loads the position once and queries pattern creation for all moves,
         avoiding the expensive board copying and pattern detection for each move.
 
-        Args:
-            board: Current chess position
-            moves: List of legal moves to evaluate
-
-        Returns:
-            Dictionary mapping moves to their tactical properties:
+        :param board: Current chess position
+        :type board: chess.Board
+        :param moves: List of legal moves to evaluate
+        :type moves: List[chess.Move]
+        :return: Dictionary mapping moves to their tactical properties:
             {move: {
                 "absolute_pin_score": int (0 if no absolute pin),
                 "relative_pin_score": int (0 if no relative pin),
@@ -142,6 +130,7 @@ class PrologPatternDetector:
                 "mvv_lva_score": int (0 if not a capture),
                 "creates_promotion": bool
             }}
+        :rtype: Dict[chess.Move, Dict[str, Any]]
         """
         # Load the position into Prolog
         self.load_position(board)
@@ -307,7 +296,7 @@ class TacticalAlphaBetaBot(ChessBot):
         self.pattern_detector = PrologPatternDetector()
 
         # Statistics tracking
-        self.last_search_stats: SearchStatistics | None = None
+        self.last_search_stats None  # Either None or SearchStatistics
         self.total_nodes_visited = 0
         self.total_pruning_count = 0
         self.move_count = 0
@@ -356,8 +345,7 @@ class TacticalAlphaBetaBot(ChessBot):
     def order_moves(
         self, board: chess.Board, moves: List[chess.Move]
     ) -> List[chess.Move]:
-        """
-        Order moves for better alpha-beta pruning.
+        """Order moves for better alpha-beta pruning.
 
         Uses tactical pattern detection with dynamic scoring:
         - Absolute pins: 50 + (score * 3), range: 56-209
@@ -376,12 +364,12 @@ class TacticalAlphaBetaBot(ChessBot):
         and querying which moves create tactical patterns, avoiding expensive
         board copying for each move.
 
-        Args:
-            board: Current position
-            moves: List of legal moves
-
-        Returns:
-            Ordered list of moves (best moves first)
+        :param board: Current position
+        :type board: chess.Board
+        :param moves: List of legal moves
+        :type moves: List[chess.Move]
+        :return: Ordered list of moves (best moves first)
+        :rtype: List[chess.Move]
         """
         # Efficiently detect which moves create tactical patterns
         move_patterns = self.pattern_detector.detect_move_patterns(board, moves)
@@ -430,8 +418,7 @@ class TacticalAlphaBetaBot(ChessBot):
         return [move for _, move in move_scores]
 
     def get_move(self, board: chess.Board, time_limit: float) -> chess.Move:
-        """
-        Get the best move using heuristic alpha-beta search.
+        """Get the best move using heuristic alpha-beta search.
 
         :param board: Current chess position
         :type board: chess.Board
@@ -480,8 +467,7 @@ class TacticalAlphaBetaBot(ChessBot):
         return chess.Move.null()
 
     def get_search_statistics(self) -> Dict[str, Any]:
-        """
-        Get search statistics for analysis.
+        """Get search statistics for analysis.
 
         :return: Dictionary containing search statistics
         :rtype: Dict[str, Any]
@@ -511,8 +497,7 @@ class TacticalAlphaBetaBot(ChessBot):
         return stats
 
     def get_info(self) -> Dict[str, Any]:
-        """
-        Get information about this bot.
+        """Get information about this bot.
 
         :return: Bot information dictionary
         :rtype: Dict[str, Any]
