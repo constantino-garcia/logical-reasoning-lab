@@ -3,6 +3,7 @@
 
 % Dynamic predicates that will be asserted from Python
 :- dynamic piece/4.        % piece(Type, Color, Row, Col)
+:- dynamic move/4.         % move(FromRow, FromCol, ToRow, ToCol)
 
 % Define opposite colors
 opposite_color(white, black).

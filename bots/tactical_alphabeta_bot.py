@@ -109,6 +109,15 @@ class PrologPatternDetector:
         for fact in facts:
             self.prolog.assertz(fact)
 
+        # Assert all legal moves as facts
+        for move in board.legal_moves:
+            from_row = chess.square_rank(move.from_square) + 1
+            from_col = chess.square_file(move.from_square) + 1
+            to_row = chess.square_rank(move.to_square) + 1
+            to_col = chess.square_file(move.to_square) + 1
+            move_fact = f"move({from_row}, {from_col}, {to_row}, {to_col})"
+            self.prolog.assertz(move_fact)
+
     def detect_move_patterns(
         self, board: chess.Board, moves: List[chess.Move]
     ) -> Dict[chess.Move, Dict[str, Any]]:
@@ -296,7 +305,7 @@ class TacticalAlphaBetaBot(ChessBot):
         self.pattern_detector = PrologPatternDetector()
 
         # Statistics tracking
-        self.last_search_stats None  # Either None or SearchStatistics
+        self.last_search_stats = None  # Either None or SearchStatistics
         self.total_nodes_visited = 0
         self.total_pruning_count = 0
         self.move_count = 0

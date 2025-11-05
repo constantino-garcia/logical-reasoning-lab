@@ -91,6 +91,9 @@ Estudia el código, ya que profundiza en algunos detalles de la sintaxis Prolog 
 
 ```prolog
 move_creates_skewer(FromR, FromC, ToR, ToC, SkewerScore) :-
+    % 0. Must be a valid move
+    move(FromR, FromC, ToR, ToC),
+
     % 1. BINDING: Obtener el tipo de pieza atacante
     piece(AttackerType, Color, FromR, FromC),
     
