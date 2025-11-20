@@ -65,7 +65,7 @@ La "puntuación python" se basa en una puntuación base para cada patrón tácti
 
 El fichero `chess_patterns.pl` contiene funciones auxiliares que te serán útiles (¡estudialas!) y las definiciones de los patrones tácticos que debes completar. 
 
-Esta KB recibe desde python las posiciones actuales de las piezas y los movimientos válidos. A continuación, usa estas posiciones y potenciales movimientos para detectar patrones tácticos. Como ejemplo, consideremos el patrón táctico *skewer*. Un *skewer* ocurre cuando una pieza ataca a una pieza valiosa, de modo que la pieza valiosa está obligada a moverse. Cuando la pieza valiosa se mueve para evitar la captura, expone otra pieza detrás de ella. Consideremos la siguiente posición, donde mueve las negras:
+Esta KB recibe desde python las posiciones actuales de las piezas y los movimientos válidos. A continuación, usa estas posiciones y potenciales movimientos para detectar patrones tácticos. Como ejemplo, consideremos el patrón táctico *skewer*. Un *skewer* ocurre cuando una pieza ataca a una pieza valiosa, de modo que la pieza valiosa está obligada a moverse. Cuando la pieza valiosa se mueve para evitar la captura, expone otra pieza detrás de ella. Consideremos la siguiente posición, donde mueven las negras:
 
 ![](assets/skewer1.png)
 
@@ -91,6 +91,9 @@ Estudia el código, ya que profundiza en algunos detalles de la sintaxis Prolog 
 
 ```prolog
 move_creates_skewer(FromR, FromC, ToR, ToC, SkewerScore) :-
+    % 0. Must be a valid move
+    move(FromR, FromC, ToR, ToC),
+
     % 1. BINDING: Obtener el tipo de pieza atacante
     piece(AttackerType, Color, FromR, FromC),
     
@@ -115,7 +118,7 @@ move_creates_skewer(FromR, FromC, ToR, ToC, SkewerScore) :-
     %    queremos simular que ya se movió a ToR,ToC
     path_clear_ignoring(ToR, ToC, R2, C2, FromR, FromC),
     
-    % 7. ARITMÉTICA IS: Calcular la puntuación del skewer
+    % 8. ARITMÉTICA IS: Calcular la puntuación del skewer
     %    BINDING: piece_value busca y liga los valores
     piece_value(FrontType, FrontValue),
     piece_value(AttackerType, AttackerValue),
@@ -124,6 +127,12 @@ move_creates_skewer(FromR, FromC, ToR, ToC, SkewerScore) :-
 ```
 
 # Tareas
+
+Las Tareas siguen un orden que facilita la narrativa, pero este no es el orden en el que se deben completar. Se sugiere:
+1. Leer el enunciado en su totalidad para comprender la estructura de la práctica.
+2. Realizar las tareas en orden creciente de complejidad. La complejidad de las tareas se indica en el título de cada tarea
+
+
 ## Tarea 1: Modificación de heuristic_alphabeta_search (Complejidad: baja)
 Dado que queremos que alpha-beta sea capaz de reordenar los movimientos, será necesario modificar la definición de la implementación actual de `heuristic_alphabeta_search`
 
@@ -216,7 +225,7 @@ Ambos objetivos del fork deben ser piezas valiosas, y definimos pieza valiosa co
 
 ![](assets/pin.png)
 
-**Reglas lógicas**: Similar al pin absoluto, pero la pieza objetivo NO debe ser el rey. Como asunción simplificadora, debe verificarse que el valor de la pieza objetivo sea mayor que el de la pieza clavada (`TargetValue > PinnedValue`). El valor de la pieza objetivo también debe ser mayor que el de la pieza atacante (`???`). El resto de verificaciones (alineación, caminos despejados, colores opuestos) son idénticas. La puntuación se calcula como  `(PinnedValue + TargetValue - PinnerValue) // 2`.
+**Reglas lógicas**: Similar al pin absoluto, pero la pieza objetivo NO debe ser el rey. Como asunción simplificadora, debe verificarse que el valor de la pieza objetivo sea mayor que el de la pieza clavada (`TargetValue > PinnedValue`). El valor de la pieza objetivo también debe ser mayor que el de la pieza atacante. El resto de verificaciones (alineación, caminos despejados, colores opuestos) son idénticas. La puntuación se calcula como  `(PinnedValue + TargetValue - PinnerValue) // 2`.
 
 
 ## Tarea 8: Evaluación de la ordenación de movimientos (Complejidad: baja)
