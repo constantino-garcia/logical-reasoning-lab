@@ -229,6 +229,6 @@ move_creates_capture(FromR, FromC, ToR, ToC, MvvLvaScore) :-
   fail.
 
 % Check if a move is a pawn promotion
-move_creates_promotion(FromR, FromC, ToR, _ToC) :-
+move_creates_promotion(FromR, FromC, ToR, ToC) :-
   fail.
 
